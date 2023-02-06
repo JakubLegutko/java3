@@ -24,7 +24,6 @@ public class Start implements RegistrationHelperInterface {
     }
     public synchronized String register(RegistrableRemoteInterface service) throws RemoteException{
         Registry registry = LocateRegistry.getRegistry();
-        RegistrableRemoteInterface stub = (RegistrableRemoteInterface) UnicastRemoteObject.exportObject(this, 0);
         List<String> registeredNames =  new ArrayList<String>(Arrays.asList(registry.list()));
         Boolean complete = false;
         int i = 0;
@@ -34,7 +33,7 @@ public class Start implements RegistrationHelperInterface {
             while(true){
             i++;
                     try {
-                        registry.bind(service.getPreferredServiceName()+i,stub);
+                        registry.bind(service.getPreferredServiceName()+i,service);
                         return service.getPreferredServiceName()+i;
                         
                     } catch (AlreadyBoundException d) {
